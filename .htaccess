@@ -1,0 +1,25 @@
+Options +SymLinksIfOwnerMatch
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+##RewriteRule ^/Traveler/(.+)$ /Traveler/index.php [END]
+##RewriteRule ^/Traveler/login /Traveler/login/index.php [END]
+RewriteRule . /Traveler/index.php [L]
+##RewriteRule ^(login)/?$ /Traveler/login/index.php [L]
+#RewriteRule ^(.*)$ https://localhost:80//Traveler/index.php [L]
+
+#<IfModule mod_rewrite.c>
+#RewriteEngine on
+#RewriteBase /
+#
+## Add slashes to the end of everything, if not present:
+#RewriteCond %{REQUEST_URI} !\.[^./]+$
+#RewriteCond %{REQUEST_URI} !(.*)/$
+#RewriteRule ^(.*)$ http://localhost/$1/ [R=301,L]
+#
+## Redirect about/ and about/X to about.php?get=X:
+#RewriteCond %{SCRIPT_FILENAME} !-d
+#RewriteCond %{SCRIPT_FILENAME} !-f
+#RewriteRule ^page/$ page.php
+#RewriteRule ^page/([A-Za-z\+\-]+)/?$ page.php?x=$1
+#</IfModule>
