@@ -41,6 +41,9 @@ class LoginUser
                 header("Location: ../Traveler");
                 exit();
             } else {
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
                 generate_csrf_token();
                 $_SESSION['auth'] = 'loggedin';
                 $_SESSION['id'] = $row['user_id'];
@@ -68,9 +71,11 @@ class LoginUser
                     $query = "INSERT INTO auth_details (user_name, selector, token, expires_at) 
                             VALUES ('$username', '$selector', '$token',  '" . date('Y-m-d\TH:i:s', time() + 864000) . "');";
                 } else if (mysqli_num_rows($query) == 1){
-                    $query = "UPDATE auth_details SET selector = '$selector', token = '$token', 
-                            expires_at = '" . date('Y-m-d\TH:i:s', time() + 864000) . "' 
-                            WHERE user_name = '$username';";
+//                    $query = "UPDATE auth_details SET selector = '$selector', token = '$token',
+//                            expires_at = '" . date('Y-m-d\TH:i:s', time() + 864000) . "'
+//                            WHERE user_name = '$username';";
+                    echo "User already logged in!";
+                    return;
                 }
                 $conn->query($query);
             }

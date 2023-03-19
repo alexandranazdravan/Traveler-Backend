@@ -75,7 +75,10 @@ if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     exit;
 }
 
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
+//echo __DIR__;
+http://localhost/Traveler/vendor/phpmailer/phpmailer/examples/gmail_oauth.php
+require 'C:\xampp\htdocs\Traveler\vendor\autoload.php';
 
 session_start();
 
