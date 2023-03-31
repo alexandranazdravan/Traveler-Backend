@@ -11,8 +11,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `auth_details` (
     `user_name` varchar(255) NOT NULL,
-    `selector` varchar(255) NOT NULL,
-    `token` varchar(255) NOT NULL,
+    `cookie` varchar(255) NOT NULL,
     `expires_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 );
 

@@ -5,6 +5,40 @@ namespace Traveler\GoogleFlights;
 use Traveler\Airline;
 use Traveler\IATA_Codes;
 
+/**
+ * More details can be found here: https://rapidapi.com/Travelpayouts/api/flight-data
+ */
+/** full possible req:
+ * https://travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com/v1/prices/direct/?destination=LED&origin=MOW"
+ * https://api.travelpayouts.com/v1/prices/cheap?origin=MOW&destination=HKT&depart_date=2023-02&return_date=2023-03&currency=EUR"
+ * https://travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com/data/en-GB/airlines.json"
+ */
+
+/** response:
+ * {
+ * "success": true,
+ * "data": {
+ * "LED": {
+ * "0": {
+ * "price": 3390,
+ * "airline": "UT",
+ * "flight_number": 381,
+ * "departure_at": "2023-03-13T19:10:00+03:00",
+ * "return_at": "2023-03-22T21:30:00+03:00",
+ * "expires_at": "2023-03-06T21:15:35Z"
+ * }
+ * }
+ * },
+ * "currency": "rub"
+ * }
+ * sau, cand nu se gaseste:
+ * {
+ *      "success":true,
+ *      "data": {
+ *      },
+ *      "currency":"EUR"
+ * }
+ */
 class GoogleFlights
 {
     private string $request_url = "https://travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com/v1/";
@@ -17,10 +51,12 @@ class GoogleFlights
     {
         $this->endpoint = $endpoint;
     }
-    public function createRequest(array $request_options): array {
+
+    public function createRequest(array $request_options): array
+    {
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => $this->request_url . $this->endpoint. $this->assemblyOptions($request_options),
+            CURLOPT_URL => $this->request_url . $this->endpoint . $this->assemblyOptions($request_options),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_ENCODING => "",
@@ -39,6 +75,7 @@ class GoogleFlights
         curl_close($curl);
         return json_decode($response, true);
     }
+
     public function analyzeResponse(array $response, string $currency, string $destination): array
     {
         $iata = new IATA_Codes\IATA();
@@ -46,16 +83,17 @@ class GoogleFlights
             print_r("Sorry, we could not find any flights which match your requirements.");
             return array();
         }
-        if (in_array($this->endpoint,$this->with_iata_endpoints)) {
+        if (in_array($this->endpoint, $this->with_iata_endpoints)) {
             return $this->processIATAEndpoint($response, $iata, $destination, $currency);
-        } else if (in_array($this->endpoint,$this->with_date_endpoints)){
+        } else if (in_array($this->endpoint, $this->with_date_endpoints)) {
             return $this->processDateEndpoint($response, $currency);
         } else {
             return $this->processNoneEndpoint($response, $iata);
         }
     }
 
-    private function assemblyOptions(array $request_options): string {
+    private function assemblyOptions(array $request_options): string
+    {
         $iata = new IATA_Codes\IATA();
         $options = "/?";
 
@@ -73,7 +111,8 @@ class GoogleFlights
     private array $with_iata_endpoints = array('prices/cheap', 'prices/direct', 'city-directions');
     private array $with_date_endpoints = array('prices/calendar', 'prices/monthly');
 
-    private function processIATAEndpoint(array $response, IATA_Codes\IATA $iata, string $destination, string $currency): array {
+    private function processIATAEndpoint(array $response, IATA_Codes\IATA $iata, string $destination, string $currency): array
+    {
         $flights_details = $response['data'][$iata->searchByCityLocation($destination)];
         $returned_details = array();
         $index = 0;
@@ -105,7 +144,8 @@ class GoogleFlights
         return $returned_details;
     }
 
-    private function processDateEndpoint(array $response, string $currency): array {
+    private function processDateEndpoint(array $response, string $currency): array
+    {
         $returned_details = array();
         $index = 0;
         foreach ($response['data'] as $flight) {
@@ -136,11 +176,12 @@ class GoogleFlights
         return $returned_details;
     }
 
-    private function processNoneEndpoint(array $response, IATA_Codes\IATA $iata): array {
+    private function processNoneEndpoint(array $response, IATA_Codes\IATA $iata): array
+    {
         $returned_details = array();
         $index = 0;
         foreach ($response['data'] as $key => $value) {
-            $splitted_key = explode('-',$key);
+            $splitted_key = explode('-', $key);
             $origin = $splitted_key[0];
             $destination = $splitted_key[1];
 

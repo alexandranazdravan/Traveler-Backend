@@ -1,6 +1,15 @@
+Header always set Access-Control-Allow-Origin " http://localhost:5173"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+Header always set Access-Control-Max-Age "1000"
+Header always set Access-Control-Allow-Credentials "true"
+Header always set Access-Control-Allow-Headers "x-requested-with, Content-Type, origin, authorization, accept, client-security-token, Cookies, Cookie, Set-Cookie "
+
+
 Options +SymLinksIfOwnerMatch
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
+
+
 RewriteCond %{REQUEST_FILENAME} !-d
 ##RewriteRule ^/Traveler/(.+)$ /Traveler/index.php [END]
 ##RewriteRule ^/Traveler/login /Traveler/login/index.php [END]
