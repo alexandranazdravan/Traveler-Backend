@@ -82,19 +82,15 @@ class ResetPass {
         $message .= 'The Traveler Team';
         $mail->Body = $message;
 
-        print_r($password);
-        print_r("\n");
         if (!$mail->send()) {
-            echo 'Mailer Error: ' . $mail->ErrorInfo;
             return false;
         } else {
-            echo 'Message sent!';
             $hash_pass = password_hash($password, PASSWORD_DEFAULT);
             $update_query = "update `users` set user_pass='$hash_pass' where user_name='$username';";
             $conn->query($update_query);
             return true;
         }
-    } //S@WKa)!&iT  S@WKa)!&iT
+    }
     private function getRandomPass($n) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&%^(){}$#@';
         $randomString = '';

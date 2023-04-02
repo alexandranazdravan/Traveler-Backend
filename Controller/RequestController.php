@@ -18,6 +18,9 @@ class RequestController {
             if($uri == 'admin') {
                 require_once "../Traveler/adminpage/index.php";
             }
+            if($uri == 'contact') {
+                require_once "../Traveler/contactus/index.php";
+            }
         }
         if($method == 'GET') {
             if($uri == 'admin') {

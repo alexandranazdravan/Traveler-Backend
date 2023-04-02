@@ -1,11 +1,13 @@
 <?php
 
-namespace Traveler\ForgotPass;
+namespace Traveler\ContactUs;
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     http_response_code(404);
     exit();
 }
 
-require "ResetPass.php";
-$reset = new ResetPass();
+require "ContactUs.php";
+$contact = new ContactUs();
+
+
