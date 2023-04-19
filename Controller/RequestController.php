@@ -21,6 +21,9 @@ class RequestController {
             if($uri == 'contact') {
                 require_once "../Traveler/contactus/index.php";
             }
+            if($uri == 'userprofile') {
+                require_once "../Traveler/profile/index.php";
+            }
         }
         if($method == 'GET') {
             if($uri == 'admin') {
@@ -28,6 +31,12 @@ class RequestController {
             }
             if($uri == 'logout') {
                 require_once "../Traveler/logoutuser/index.php";
+            }
+            if($uri == 'userprofile') {
+                require_once "../Traveler/profile/index.php";
+            }
+            if($uri == 'dashboard') {
+                require_once "../Traveler/google_flights/index.php";
             }
         }
     }

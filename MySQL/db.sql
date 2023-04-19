@@ -19,3 +19,5 @@ CREATE TABLE `auth_details` (
 ALTER TABLE `users` ADD UNIQUE KEY `user_name` (`user_name`);
 
 ALTER TABLE `auth_details` ADD UNIQUE KEY `user_name` (`user_name`);
+
+ALTER TABLE users ADD COLUMN user_avatar TEXT NOT NULL DEFAULT 'https://as2.ftcdn.net/v2/jpg/04/10/43/77/1000_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta.jpg' CHECK(user_avatar REGEXP '^(http|https)://[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(:[0-9]{1,5})?(\/.*)?$');

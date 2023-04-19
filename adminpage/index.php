@@ -67,7 +67,8 @@ if (isset($uri[3])) {
         $user_fullname = $data['user_fullname'];
         $user_email = $data['user_email'];
         $user_id = $data['user_id'];
-        $query = "update `users` set user_name='$user_name', user_email='$user_email', user_fullname='$user_fullname' where user_id = '$user_id';";
+        $user_avatar = $data['user_avatar'];
+        $query = "update `users` set user_name='$user_name', user_email='$user_email', user_fullname='$user_fullname', user_avatar='$user_avatar' where user_id = '$user_id';";
         $conn->query($query);
     }
 }

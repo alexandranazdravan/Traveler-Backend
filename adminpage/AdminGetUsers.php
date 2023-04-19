@@ -3,7 +3,7 @@ namespace Traveler\Admin;
 
 class AdminGetUsers{
     public function __construct($conn) {
-        $query = mysqli_query($conn, "select `user_id`, `user_name`, `user_fullname`, `user_email` from `users`;");
+        $query = mysqli_query($conn, "select `user_id`, `user_name`, `user_fullname`, `user_email`, `user_avatar` from `users`;");
         $rows = array();
 
         while($row = mysqli_fetch_array($query)){
