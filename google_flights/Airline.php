@@ -1,6 +1,6 @@
 <?php
 
-namespace Traveler\Airline;
+namespace Traveler\GoogleFlights;
 class Airline {
     private array $airline_codes;
 
@@ -16,5 +16,13 @@ class Airline {
 
     public function searchByCode(string $code) {
         return $this->airline_codes[$code];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAirlineCodes(): array
+    {
+        return $this->airline_codes;
     }
 }

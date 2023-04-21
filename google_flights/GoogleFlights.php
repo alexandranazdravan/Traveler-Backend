@@ -2,8 +2,10 @@
 
 namespace Traveler\GoogleFlights;
 
-use Traveler\Airline;
-use Traveler\IATA_Codes;
+
+//require "Airline.php";
+//require "IATA.php";
+use DateTime;
 
 /**
  * More details can be found here: https://rapidapi.com/Travelpayouts/api/flight-data
@@ -76,15 +78,11 @@ class GoogleFlights
         return json_decode($response, true);
     }
 
-    public function analyzeResponse(array $response, string $currency, string $destination): array
+    public function analyzeResponse(array $response, string $currency = '', string $destination = '', $origin = ''): array
     {
-        $iata = new IATA_Codes\IATA();
-        if ($response['data'] == array()) {
-            print_r("Sorry, we could not find any flights which match your requirements.");
-            return array();
-        }
+        $iata = new IATA();
         if (in_array($this->endpoint, $this->with_iata_endpoints)) {
-            return $this->processIATAEndpoint($response, $iata, $destination, $currency);
+            return $this->processIATAEndpoint($response, $iata, $destination, $origin, $currency);
         } else if (in_array($this->endpoint, $this->with_date_endpoints)) {
             return $this->processDateEndpoint($response, $currency);
         } else {
@@ -94,12 +92,27 @@ class GoogleFlights
 
     private function assemblyOptions(array $request_options): string
     {
-        $iata = new IATA_Codes\IATA();
-        $options = "/?";
+        $iata = new IATA();
+        $options = "?";
 
         foreach ($request_options as $key => $value) {
             if (in_array($key, $this->search_options)) {
-                $options = $options . $key . '=' . $iata->searchByCityLocation($value) . '&';
+                $opt = $iata->searchByCityLocation($value);
+                if ($opt != '') {
+                    $options = $options . $key . '=' . $iata->searchByCityLocation($value) . '&';
+                }
+                else {
+                    $error_message = array('error' => 'There is no city with such name');
+                    http_response_code(400);
+                    echo json_encode($error_message);
+                    exit();
+                }
+            } else  if (in_array($key, $this->date_options)) {
+                $departure = explode('T', $value);
+                $departure_time = explode("+", $departure[1])[0];
+                $departure_day = $departure[0];
+                $options = $options . $key . '=' . $departure_day . '&';
+                $Bgdgdfgfd = 10;
             } else {
                 $options = $options . $key . '=' . $value . '&';
             }
@@ -108,39 +121,79 @@ class GoogleFlights
     }
 
     private array $search_options = array('destination', 'origin');
+    private array $date_options = array('return_date', 'depart_date');
     private array $with_iata_endpoints = array('prices/cheap', 'prices/direct', 'city-directions');
     private array $with_date_endpoints = array('prices/calendar', 'prices/monthly');
 
-    private function processIATAEndpoint(array $response, IATA_Codes\IATA $iata, string $destination, string $currency): array
+    private function processIATAEndpoint(array $response, IATA $iata, string $destination, string $origin, string $currency): array
     {
-        $flights_details = $response['data'][$iata->searchByCityLocation($destination)];
         $returned_details = array();
         $index = 0;
+        if($destination !== '') {
+            $flights_details = $response['data'][$iata->searchByCityLocation($destination)];
 
-        foreach ($flights_details as $flight) {
-            $departure = explode('T', $flight['departure_at']);
-            $departure_time = explode("+", $departure[1])[0];
-            $departure_day = $departure[0];
+            foreach ($flights_details as $flight) {
+                $departure = explode('T', $flight['departure_at']);
+                $departure_time = explode("+", $departure[1])[0];
+                $date = new DateTime($departure[0]);
+                $departure_day = $date->format('d-m-Y');
 
-            $return = explode('T', $flight['return_at']);
-            $return_time = explode("+", $return[1])[0];
-            $return_day = $return[0];
+                $return = explode('T', $flight['return_at']);
+                $return_time = explode("+", $return[1])[0];
+                $date = new DateTime($return[0]);
+                $return_day = $date->format('d-m-Y');
 
-            $airline = new Airline\Airline();
-            $airline_details = $airline->searchByCode($flight['airline']);
+                $airline = new Airline();
+                $airline_details = $airline->searchByCode($flight['airline']);
 
-            $returned_details[$index] = array(
-                'Airline' => $airline_details[0],
-                'Is it low cost?' => $airline_details[1] ? 'Yes' : 'No',
-                'Price' => $flight['price'] . ' ' . strtoupper($currency),
-                'Flight number' => $flight['flight_number'],
-                'Departure day' => $departure_day,
-                'Departure time' => $departure_time,
-                'Return day' => $return_day,
-                'Return time' => $return_time,
-            );
-            $index++;
+                $returned_details[$index] = array(
+                    'origin' => $origin,
+                    'destination' => $destination,
+                    'airline' => $airline_details[0],
+                    'is_lowcost' => $airline_details[1] ? 'Yes' : 'No',
+                    'price' => $flight['price'] . ' ' . strtoupper($currency),
+                    'flight_number' => $flight['flight_number'],
+                    'departure_at' => $departure_day,
+                    'departure_time' => $departure_time,
+                    'return_at' => $return_day,
+                    'return_time' => $return_time,
+                    'is_favourite' => false
+                );
+                $index++;
+            }
+        } else {
+            foreach ($response['data'] as $key => $flight) {
+                $departure = explode('T', $flight['departure_at']);
+                $departure_time = explode("+", $departure[1])[0];
+                $date = new DateTime($departure[0]);
+                $departure_day = $date->format('d-m-Y');
+
+                $return = explode('T', $flight['return_at']);
+                $return_time = explode("+", $return[1])[0];
+                $date = new DateTime($return[0]);
+                $return_day = $date->format('d-m-Y');
+
+                $airline = new Airline();
+                $airline_details = $airline->searchByCode($flight['airline']);
+
+                $returned_details[$index] = array(
+                    'origin' => $iata->searchByIATACityCode($flight['origin']),
+                    'destination' => $iata->searchByIATACityCode($key),
+                    'airline' => $airline_details[0],
+                    'is_lowcost' => $airline_details[1] ? 'Yes' : 'No',
+                    'price' => $flight['price'] . ' ' . strtoupper($currency),
+                    'flight_number' => $flight['flight_number'],
+                    'departure_at' => $departure_day,
+                    'departure_time' => $departure_time,
+                    'return_at' => $return_day,
+                    'return_time' => $return_time,
+                    'is_favourite' => false
+                );
+                $index++;
+            }
         }
+//        echo json_encode($returned_details,  JSON_HEX_APOS);
+//        $gvbfcgddf = json_encode($returned_details,  JSON_HEX_APOS);
         return $returned_details;
     }
 
@@ -151,13 +204,15 @@ class GoogleFlights
         foreach ($response['data'] as $flight) {
             $departure = explode('T', $flight['departure_at']);
             $departure_time = explode("+", $departure[1])[0];
-            $departure_day = $departure[0];
+            $date = new DateTime($departure[0]);
+            $departure_day = $date->format('d-m-Y');
 
             $return = explode('T', $flight['return_at']);
             $return_time = explode("+", $return[1])[0];
-            $return_day = $return[0];
+            $date = new DateTime($return[0]);
+            $return_day = $date->format('d-m-Y');
 
-            $airline = new Airline\Airline();
+            $airline = new Airline();
             $airline_details = $airline->searchByCode($flight['airline']);
 
             $returned_details[$index] = array(
@@ -176,7 +231,7 @@ class GoogleFlights
         return $returned_details;
     }
 
-    private function processNoneEndpoint(array $response, IATA_Codes\IATA $iata): array
+    private function processNoneEndpoint(array $response, IATA $iata): array
     {
         $returned_details = array();
         $index = 0;

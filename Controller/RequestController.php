@@ -24,6 +24,9 @@ class RequestController {
             if($uri == 'userprofile') {
                 require_once "../Traveler/profile/index.php";
             }
+            if($uri == 'dashboard') {
+                require_once "../Traveler/google_flights/index.php";
+            }
         }
         if($method == 'GET') {
             if($uri == 'admin') {

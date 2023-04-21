@@ -1,5 +1,5 @@
 <?php
-namespace Traveler\IATA_Codes;
+namespace Traveler\GoogleFlights;
 class IATA {
 
     private $city_codes_iata = array();
@@ -20,12 +20,14 @@ class IATA {
     }
 
     public function searchByIATACityCode(string $iata_code): string {
-        $return_city =  array_search($iata_code, array_flip($this->city_codes_iata));
-        return ($return_city != "") ? $return_city : $this->findByAirportCode($iata_code);
+        if(isset($this->city_codes_iata[$iata_code])) {
+            return  $this->city_codes_iata[$iata_code];
+        }
+        return  $this->findByAirportCode($iata_code);
     }
 
     public function searchByCityLocation(string $city): string {
-        return array_search($city, $this->city_codes_iata);
+        return array_search(strtolower($city), array_map('strtolower', $this->city_codes_iata));
     }
 
     private function findByAirportCode($iata_code) {
