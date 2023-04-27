@@ -34,6 +34,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $conn->query($query);
         $query = "update `auth_details` set user_name='$username' where cookie = '$cookie';";
         $conn->query($query);
-        $gdfgfd = 9;
     }
 }

@@ -15,7 +15,7 @@ class Airline {
     }
 
     public function searchByCode(string $code) {
-        return $this->airline_codes[$code];
+        return $this->airline_codes[$code] ?? null;
     }
 
     /**

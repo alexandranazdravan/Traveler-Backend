@@ -4,7 +4,6 @@ namespace Traveler\RequestController;
 class RequestController {
     public function __construct(string $method, string $uri)
     {
-        $gdfgddfgdf = 8;
         if ($method == 'POST') {
             if ($uri == 'login') {
                 require_once "../Traveler/loginuseradmin/index.php";
@@ -27,6 +26,9 @@ class RequestController {
             if($uri == 'dashboard') {
                 require_once "../Traveler/google_flights/index.php";
             }
+            if($uri == 'wishlist') {
+                require_once "../Traveler/userwishlist/index.php";
+            }
         }
         if($method == 'GET') {
             if($uri == 'admin') {
@@ -40,6 +42,14 @@ class RequestController {
             }
             if($uri == 'dashboard') {
                 require_once "../Traveler/google_flights/index.php";
+            }
+            if($uri == 'wishlist') {
+                require_once "../Traveler/userwishlist/index.php";
+            }
+        }
+        if($method == 'DELETE') {
+            if($uri == 'wishlist') {
+                require_once "../Traveler/userwishlist/index.php";
             }
         }
     }
