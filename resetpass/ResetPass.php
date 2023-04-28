@@ -16,9 +16,7 @@ class ResetPass {
     public function  __construct() {
         $data = json_decode(file_get_contents('php://input'), true);
         foreach ($data as $key => $value) {
-            if ($key != 'password') {
-                $data[$key] = _cleaninjections(trim($value));
-            }
+            $data[$key] = _cleaninjections(trim($value));
         }
 
         $username = $data['username'];

@@ -8,4 +8,4 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 
 require "ResetPass.php";
-$reset = new ResetPass();
+new ResetPass();

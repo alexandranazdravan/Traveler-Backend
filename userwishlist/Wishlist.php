@@ -98,20 +98,14 @@ class Wishlist {
         $origin = $flight['origin'];
         $destination = $flight['destination'];
         $airline = $flight['airline'];
-        $lowcost = $flight['is_lowcost'];
+        $lowcost = $flight['lowcost'];
         $price = $flight['price'];
         $f_no = $flight['flight_number'];
 
-        $depart_day_str = $flight['departure_at'];
-        $date = DateTime::createFromFormat('d-m-Y', $depart_day_str);
-        $depart_day = $date->format('Y-m-d');
+        $depart_day = $flight['depart_day'];
+        $depart_time = $flight['depart_time'];
 
-        $depart_time = $flight['departure_time'];
-
-        $return_day_str = $flight['return_at'];
-        $date = DateTime::createFromFormat('d-m-Y', $return_day_str);
-        $return_day = $date->format('Y-m-d');
-
+        $return_day = $flight['return_day'];
         $return_time = $flight['return_time'];
 
         $delete_query = "delete from `wishlist`where user_id = '$user_id' and destination = '$destination' 
@@ -136,5 +130,29 @@ class Wishlist {
                             duration = '$duration' and distance = '$distance' and no_of_changes = '$no_of_changes' 
                         and price = '$price'";
         $conn->query($delete_query);
+    }
+
+    public function checkRequest(mixed $conn) {
+        if(!isset($_COOKIE['loggedin'])) {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $cookie = $data['cookie'];
+        }
+        else {
+            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                $cookie = $_COOKIE['loggedin'];
+            }
+        }
+
+        $query = mysqli_query($conn, "select u.user_id from `users` u join auth_details a on u.user_name = a.user_name
+WHERE a.cookie = '$cookie';");
+        $rows = mysqli_fetch_array($query);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->addToWishlist($conn, $data['flight'], $rows['user_id']);
+        } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+            $this->removeFromWishlist($conn, $data['flight'], $rows['user_id']);
+        } else  if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $this->getWishlist($conn, $rows['user_id']);
+        }
     }
 }

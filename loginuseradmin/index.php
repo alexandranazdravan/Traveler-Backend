@@ -9,6 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 
 require "LoginUser.php";
-$login = new LoginUser();
+new LoginUser();
 
 

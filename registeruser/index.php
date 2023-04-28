@@ -9,4 +9,4 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 
 require "RegisterUser.php";
-$register = new Register\RegisterUser();
+new Register\RegisterUser();

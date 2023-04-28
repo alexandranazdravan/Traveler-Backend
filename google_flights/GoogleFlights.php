@@ -226,8 +226,159 @@ class GoogleFlights
         return $returned_details;
     }
 
+    public function checkErrors($response) {
+        if (isset($response['error'])) {
+            $error_message = array('error' => $response['error']);
+            http_response_code(400);
+            echo json_encode($error_message);
+            exit();
+        }
+        if ($response['data'] == array()) {
+            $error_message = array('error' => 'Sorry, there are no flights at the moment');
+            http_response_code(400);
+            echo json_encode($error_message);
+            exit();
+        }
+    }
+
+
+    public function checkLoggedIn($conn, $data) {
+        if (!isset($_COOKIE['loggedin']) and !isset($data['cookie'])) {
+            $error_message = array('error' => 'User not logged in!');
+            http_response_code(400);
+            echo json_encode($error_message);
+            exit();
+        }
+
+        if(!isset($_COOKIE['loggedin'])) {
+            $cookie = $data['cookie'];
+        }
+        else {
+            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                $cookie = $_COOKIE['loggedin'];
+            }
+        }
+        $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name
+                        WHERE a.cookie = '$cookie';");
+        if (mysqli_num_rows($query) == 0) {
+            $error_message = array('error' => 'User not logged in!');
+            http_response_code(400);
+            echo json_encode($error_message);
+            exit();
+        }
+    }
+
+    public function checkRequest($conn, $data) {
+        if (isset($_GET['item'])) {
+            if ($_GET['item'] == 'airline') {
+                $airline = new Airline();
+                $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                $pageSize = isset($_GET['pageSize']) ? $_GET['pageSize'] : 10;
+                $startIndex = ($page - 1) * $pageSize;
+
+                $lastCode = isset($_GET['lastCode']) ? $_GET['lastCode'] : null;
+                if ($lastCode !== null) {
+                    $lastIndex = array_search($lastCode, array_keys($airline->getAirlineCodes()));
+                    $startIndex = $lastIndex + 1;
+                }
+                $subset = array_slice($airline->getAirlineCodes(), $startIndex, $pageSize, true);
+                $return_array = array();
+                foreach ($subset as $code => $details) {
+                    $return_array[] = array(
+                        'code' => $code,
+                        'name' => $details[0]
+                    );
+                }
+
+                header('Content-Type: application/json');
+                echo json_encode($return_array);
+
+            }
+        } else if(isset($_GET['role'])){
+            $cookie = $_COOKIE['loggedin'];
+            $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name
+                        WHERE a.cookie = '$cookie';");
+            $rows = mysqli_fetch_array($query);
+            echo json_encode(array("user_role" => $rows[0]));
+        } else {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $this->setEndpoint($data['uri']);
+            if($data['uri'] == 'v1/city-directions') {
+                $request_options = array("origin" => $data['origin'], "currency" => $data['currency']);
+                $response =  $this->createRequest($request_options);
+                $this->checkErrors($response);
+                $edited_response = $this->analyzeResponse($response, $data['currency']);
+            } else if($data['uri'] == 'v1/airline-directions') {
+                array_shift($data);
+                $response = $this->createRequest($data);
+                $this->checkErrors($response);
+                $edited_response = $this->analyzeResponse($response);
+            } else if($data['uri'] == 'v1/prices/direct' || $data['uri'] == 'v1/prices/cheap') {
+                array_shift($data);
+
+                if(isset($data['depart_date'])) {
+                    $data = array_filter($data, function ($value) {
+                        return $value !== null;
+                    });
+
+                    $response_1 = $this->createRequest($data);
+                    $this->checkErrors($response_1);
+
+                    foreach ($data as $key => $value) {
+                        if ($key == 'depart_date' || $key == 'return_date') {
+                            $date = new DateTime($value);
+                            $data[$key] = $date->format('Y-m');
+                        }
+                    }
+
+                    $response_2 = $this->createRequest($data);
+                    $this->checkErrors($response_2);
+
+                    foreach ($response_2['data'] as $city => $value) {
+                        foreach ($value as $flight) {
+                            array_push($response_1['data'][$city], $flight);
+                        }
+                    }
+                    $response = $response_1;
+                } else {
+                    $now = new DateTime();
+                    $month = $now->format('m');
+                    $year = $now->format('Y');
+                    $now_date = $year . '-' . $month;
+                    $data["depart_date"] = $now_date;
+                    $response = $this->createRequest($data);
+                    $this->checkErrors($response);
+
+                    for ($i = 1; $i < 4; $i++) {
+                        $now->modify('+1 month');
+                        $month = $now->format('m');
+                        $year = $now->format('Y');
+                        $now_date = $year . '-' . $month;
+                        $data["depart_date"] = $now_date;
+                        $one_flight = $this->createRequest($data);
+                        $this->checkErrors($response);
+                        foreach ($one_flight['data'] as $city => $value) {
+                            foreach ($value as $flight) {
+                                array_push($response['data'][$city], $flight);
+                            }
+                        }
+                    }
+                }
+
+                $edited_response = $this->analyzeResponse($response, $data['currency'], $data['destination'], $data['origin']);
+            } else if($data['uri'] == 'v2/prices/month-matrix') {
+                array_shift($data);
+                $response = $this->createRequest($data);
+                $this->checkErrors($response);
+                $edited_response = $this->analyzeResponse($response, $data['currency'], $data['destination'], $data['origin']);
+            }
+            echo json_encode($edited_response);
+        }
+    }
+    
     private array $search_options = array('destination', 'origin');
     private array $date_options = array('return_date', 'depart_date');
     private array $with_iata_endpoints = array('v1/prices/cheap', 'v1/prices/direct', 'v1/city-directions');
     private array $with_date_endpoints = array('v2/prices/month-matrix');
+    
 }
