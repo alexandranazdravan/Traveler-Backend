@@ -76,8 +76,12 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 
 
 ## TravelPayouts API
-<h3>Endpoints: </h3>
-  * [/prices/cheap](#cheap-direct-flights)
+### Endpoints:
+- [cheap flights](#cheap-direct-flights)
+- [direct flights](#direct-flights)
+- [popular city directions](#popular-city-directions)
+- [prices per month](#prices-per-month)
+- [popular airlines](#popular-airlines)
   
 ``` bash
  $curl = curl_init();
