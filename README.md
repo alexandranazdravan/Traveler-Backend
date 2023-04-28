@@ -52,8 +52,17 @@ Create a built-in web server: [https://www.jetbrains.com/help/phpstorm/php-built
 <br>
 Make requests to localhost:*port*/*uri*
 
-** Note
+**Note
 Available Endpoints:
+	* /admin  (only for admins)
+	* /login
+	* /register
+	* /forgotpass
+	* /logout
+	* /userprofile
+	* /dashboard
+	* /wishlist
+	
 
 ## IATA Codes
 IATA codes are three-letter codes assigned by the International Air Transport Association (IATA) to identify airports, airlines, and aircrafts. <br>
