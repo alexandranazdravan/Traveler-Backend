@@ -35,7 +35,7 @@ $ git clone https://github.com/alexandranazdravan/Traveler-Frontend.git
 
 I recommend using [PHPStorm IDE](https://www.jetbrains.com/phpstorm/) from JetBrains. There, you can easily create a [built-in web server](https://www.jetbrains.com/help/phpstorm/php-built-in-web-server.html).
 <br>
-Make requests to localhost:*port*/*uri*
+When the setup is finished, the requests should be made at:  localhost:*port*/*uri*
 
 **Note:**
 <blockquote>
