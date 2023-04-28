@@ -7,7 +7,6 @@
 </h1>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#iata-codes">IATA Codes</a> •
   <a href="#travel-payouts">TravelPayouts API</a> •
@@ -15,25 +14,6 @@
   <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
-
-## Key Features
-
-* Login/Register
-  - These are necessary, without them, a user cannot benefit from the other features of the application
-* Profile
-  - A user can change its password and other data (username, email, fullname), including even their avatar
-* Wishlist
-   - This way, a user can "keep track" of their favourite flights; they can delete a flight if they are not interested in it anymore
-*  Searching for flights
-   - A user can make searches based on preferences:
-		-  [Cheap Flights](#cheap-flights)
-		-  [Direct Flights](#direct-flights)
-		-  [Popular City Directions](#popular-city-directions)
-		-  [Prices per Month](#prices-per-month)
-		-  [Popular Airlines](#popular-airlines)
-* Admin
-   - This feature is exclusively for app admins. From here, they can view the [IATA Codes](#iata-codes) used by the TravelPayouts API and also manage users(edit, delete, update)
-
 
 ## How To Use
 
