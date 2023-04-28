@@ -10,8 +10,8 @@
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#iata-codes">IATA Codes</a> •
-  <a href="#search-for-flights">TravelPayouts API</a> •
-  <a href="#search-for-flights">PHPMailer</a> •
+  <a href="#travel-payouts">TravelPayouts API</a> •
+  <a href="#phpmailer">PHPMailer</a> •
   <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
