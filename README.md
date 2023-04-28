@@ -71,7 +71,7 @@ GET https://api.travelpayouts.com/data/en/airports.json  <br>
 GET https://api.travelpayouts.com/data/en/airlines.json
 
 
-<h2 id="search-for-flights">TravelPayouts API</h2>
+<h2 id="travel-payouts">TravelPayouts API</h2>
 ### Endpoints:
 - [/v1/prices/cheap](#cheap-direct-flights)
 	- origin
