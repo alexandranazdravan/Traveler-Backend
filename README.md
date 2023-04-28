@@ -76,6 +76,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 
 
 ## TravelPayouts API
+
 ``` bash
  $curl = curl_init();
         curl_setopt_array($curl, [
@@ -97,8 +98,10 @@ GET https://api.travelpayouts.com/data/en/airlines.json
         $response = curl_exec($curl);
         curl_close($curl);
 ```
+
 Example of responses:
 <h4>1. Cheap and Direct Flights</h4>
+
 ``` bash
 {
 "success": true,
@@ -115,7 +118,9 @@ Example of responses:
     }
 }
 ```
+
 <h4>2. Popular Airline Routes</h4>
+
 ``` bash
 {
     "success": true,
@@ -135,7 +140,9 @@ Example of responses:
     "currency":"rub"
 }
 ```
+
 <h4>3. Popular City Directions</h4>
+
 ``` bash
 {
     "success":true,
@@ -156,7 +163,9 @@ Example of responses:
     "currency":"rub"
 }
 ```
+
 <h4>4. Prices for a Month</h4>
+
 ``` bash
 {
     "success":true,
