@@ -53,17 +53,17 @@ Create a built-in web server: [https://www.jetbrains.com/help/phpstorm/php-built
 Make requests to localhost:*port*/*uri*
 
 **Note:**
-
 <blockquote>
-Available Endpoints:
-  * /admin  (only for admins)
-  * /login
-  * /register
-  * /forgotpass
-  * /logout
-  * /userprofile
-  * /dashboard
-  * /wishlist
+    <ul>
+        <li>/admin (only for admins)</li>
+        <li>/login</li>
+        <li>/register</li>
+        <li>/forgotpass</li>
+        <li>/logout</li>
+        <li>/userprofile</li>
+        <li>/dashboard</li>
+        <li>/wishlist</li>
+    </ul>
 </blockquote>
 	
 ## IATA Codes
