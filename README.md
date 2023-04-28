@@ -79,7 +79,7 @@ I have extracted from these json's the codes and the names and saved them in ass
 
 <h2 id="travel-payouts">TravelPayouts API</h2>
 
-### Endpoints:
+### App endpoints and their parameters:
 - [/v1/prices/cheap](#cheap-direct-flights)
 	- origin
 	- destination
