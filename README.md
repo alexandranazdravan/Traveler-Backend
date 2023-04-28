@@ -62,7 +62,7 @@ Available Endpoints:
 	* /userprofile
 	* /dashboard
 	* /wishlist
-	
+:**	
 
 ## IATA Codes
 IATA codes are three-letter codes assigned by the International Air Transport Association (IATA) to identify airports, airlines, and aircrafts. <br>
