@@ -76,7 +76,8 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 
 
 ## TravelPayouts API
-
+<h3>Endpoints: </h3>
+  * [/prices/cheap](#cheap-direct-flights)
 ``` bash
  $curl = curl_init();
         curl_setopt_array($curl, [
@@ -99,8 +100,8 @@ GET https://api.travelpayouts.com/data/en/airlines.json
         curl_close($curl);
 ```
 
-Example of responses:
-<h4>1. Cheap and Direct Flights</h4>
+<h3>Example of responses</h3>
+<h4 id="cheap-direct-flights">1. Cheap and Direct Flights</h4>
 
 ``` bash
 {
