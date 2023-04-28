@@ -83,7 +83,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 	- depart_date
 	- return_date
 	- currency
-- [/v1/popular/direct](#cheap-direct-flights)
+- [/v1/prices/direct](#cheap-direct-flights)
 	- origin
 	- destination
 	- depart_date
@@ -112,7 +112,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => [
-                "X-Access-Token: 05f40c220e8193fc8297804b069de4d8",
+                "X-Access-Token: ...",
                 "X-RapidAPI-Host: travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com",
                 "X-RapidAPI-Key: 54db60a185mshe7972e9ad846b31p1ee7b6jsnc676d9a1406e"
             ],
@@ -206,6 +206,61 @@ GET https://api.travelpayouts.com/data/en/airlines.json
         "actual":true
     }]
 }
+```
+## PHPMailer
+Popular and effective PHP library, PHPMailer is used to send emails safely and conveniently from PHP applications. With capabilities including SMTP authentication, formatting for HTML and plain-text messages, file attachments, and more, it is a frequently used library. 
+<br> <br>
+I used PHPMailer with OAuth. From [Google Cloud Console](https://cloud.google.com/cloud-console?utm_source=google&utm_medium=cpc&utm_campaign=emea-ro-all-en-dr-bkws-all-all-trial-e-gcp-1011340&utm_content=text-ad-none-any-dev_c-cre_607109959198-adgp_Hybrid+%7C+BKWS+-+EXA+%7C+Txt+~+Management+Tools+~+Cloud+Console%23v1-kwid_43700072834186697-aud-606988878694:kwd-55675752867-userloc_1011795&utm_term=kw_google%20cloud%20console-net_g-plac_&&gad=1&gclid=Cj0KCQjw3a2iBhCFARIsAD4jQB3Sl_6uptLu6bleiRtqvNyQRhgZgN2JcRDlNh-XwwQwK4ovNq1E4tIaAlx6EALw_wcB&gclsrc=aw.ds), I got a clientId and a clientSecret and after running my app I also got a refresh token.
+
+``` bash
+        $mail = new PHPMailer();
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 465;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->SMTPAuth = true;
+
+        $mail->AuthType = 'XOAUTH2';
+        $admin_email = 'phpmail2023@gmail.com';
+        $clientId = '...';
+        $clientSecret = '...';
+        $refreshToken = '...';
+
+        $provider = new Google(
+            [
+                'clientId' => $clientId,
+                'clientSecret' => $clientSecret,
+            ]
+        );
+
+        $mail->setOAuth(
+            new OAuth(
+                [
+                    'provider' => $provider,
+                    'clientId' => $clientId,
+                    'clientSecret' => $clientSecret,
+                    'refreshToken' => $refreshToken,
+                    'userName' => $admin_email,
+                ]
+            )
+        );
+
+        try {
+            $mail->setFrom($admin_email, 'First Last');
+        } catch (MailerExcp $e) {
+        }
+        try {
+            $mail->addAddress($email);
+        } catch (MailerExcp $e) {
+        }
+	
+        $mail->Subject = '...';
+
+        $message = '...';
+        $mail->Body = $message;
+
+        !$mail->send()
+    }
 ```
 
 ## Related
