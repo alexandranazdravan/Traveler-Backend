@@ -58,7 +58,7 @@ GET https://api.travelpayouts.com/data/en/cities.json  <br>
 GET https://api.travelpayouts.com/data/en/airports.json  <br>
 GET https://api.travelpayouts.com/data/en/airlines.json <br>
 
-I have extracted from these json's the codes and the names and saved them in associative arrays. This way, the requests from the user are made with the name of the cities/airlines and the IATA class contains methods to "translate" from code to name and viceversa. <br>
+I have extracted from these json's the codes and the names and saved them in associative arrays. This way, the requests from the user are made with the name of the cities/airlines, whereas the IATA class contains methods to "translate" from code to name and viceversa. <br>
 
 ``` bash
     public function searchByIATACityCode(string $iata_code): string {
