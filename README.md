@@ -56,8 +56,26 @@ Available Endpoints:
 IATA codes are three-letter codes assigned by the International Air Transport Association (IATA) to identify airports, airlines, and aircrafts. <br>
 GET https://api.travelpayouts.com/data/en/cities.json  <br>
 GET https://api.travelpayouts.com/data/en/airports.json  <br>
-GET https://api.travelpayouts.com/data/en/airlines.json
+GET https://api.travelpayouts.com/data/en/airlines.json <br>
 
+I have extracted from these json's the codes and the names and saved them in associative arrays. This way, the requests from the user are made with the name of the cities/airlines and the IATA class contains methods to "translate" from code to name and viceversa. <br>
+
+``` bash
+    public function searchByIATACityCode(string $iata_code): string {
+        if(isset($this->city_codes_iata[$iata_code])) {
+            return  $this->city_codes_iata[$iata_code];
+        }
+        return  $this->findByAirportCode($iata_code);
+    }
+
+    public function searchByCityLocation(string $city): string {
+        return array_search(strtolower($city), array_map('strtolower', $this->city_codes_iata));
+    }
+
+    private function findByAirportCode($iata_code) {
+        return $this->city_codes_iata[$this->airport_city_code[$iata_code]];
+    }
+```
 
 <h2 id="travel-payouts">TravelPayouts API</h2>
 ### Endpoints:
