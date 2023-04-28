@@ -215,7 +215,7 @@ I have extracted from these json's the codes and the names and saved them in ass
 Popular and effective PHP library, PHPMailer is used to send emails safely and conveniently from PHP applications. With capabilities including SMTP authentication, formatting for HTML and plain-text messages, file attachments, and more, it is a frequently used library. 
 <br> <br>
 
-I used PHPMailer with OAuth. From [Google Cloud Console](https://cloud.google.com/cloud-console), I got a clientId and a clientSecret and after running my app I also got a refresh token. These were necessary, because "Less secure app access" is not available, whether the account has 2 step auth enabled or not([https://mailtrap.io/blog/phpmailer-gmail/](https://mailtrap.io/blog/phpmailer-gmail/)).
+I used PHPMailer with OAuth. From [Google Cloud Console](https://cloud.google.com/cloud-console), I got a clientId and a clientSecret and after running my app I also got a refresh token. These were necessary, because "Less secure app access" is not available, whether the account has 2 step auth enabled or not( [https://mailtrap.io/blog/phpmailer-gmail/](https://mailtrap.io/blog/phpmailer-gmail/) ).
 
 ``` bash
         $mail = new PHPMailer();
