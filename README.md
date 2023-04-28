@@ -17,7 +17,7 @@
 
 ## How To Use
 
-To clone and run this application, you'll need [PHP 8.2](https://www.php.net/downloads.php) and [MySQL or MariaDB Server](https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.1.0&os=windows&cpu=x86_64&pkg=msi&m=chroot-network). <br> 
+To run this application, you'll need [PHP 8.2](https://www.php.net/downloads.php) and [MySQL or MariaDB Server](https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.1.0&os=windows&cpu=x86_64&pkg=msi&m=chroot-network). <br> 
 
 **Note:**
 > I recommend using a [xampp server][1]; it already has all the features you need in order to run this app.
