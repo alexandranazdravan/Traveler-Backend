@@ -16,10 +16,6 @@
   <a href="#license">License</a>
 </p>
 
-<p align="center">
-  <img src="extras\dashboard.png" width="800">
-</p>
-
 ## Key Features
 
 * Login/Register
