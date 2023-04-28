@@ -33,7 +33,7 @@ From your command line:
 $ git clone https://github.com/alexandranazdravan/Traveler-Backend.git
 ```
 
-I recommend using [PHPStorm IDE](https://www.jetbrains.com/phpstorm/) from JetBrains. There, you can easily create a [built-in web server](https://www.jetbrains.com/help/phpstorm/php-built-in-web-server.html).
+I recommend using [PHPStorm IDE](https://www.jetbrains.com/phpstorm/) from JetBrains. There, you can easily create a [PHP Web Page](https://7thzero.com/blog/configure-phpstorm-for-local-php-web-application-debugging).
 <br>
 When the setup is finished, the requests should be made at:  localhost:*port*/*uri*
 
