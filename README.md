@@ -78,10 +78,27 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 ## TravelPayouts API
 ### Endpoints:
 - [/v1/prices/cheap](#cheap-direct-flights)
+	- origin
+	- destination
+	- depart_date
+	- return_date
+	- currency
 - [/v1/popular/direct](#cheap-direct-flights)
+	- origin
+	- destination
+	- depart_date
+	- return_date
+	- currency
 - [/v1/city-directions](#popular-city-directions)
+	- origin
+	- currency
 - [v2/prices/month-matrix](#prices-per-month)
+	- origin
+	- destination
+	- currency
 - [v1/airline-directions](#popular-airlines)
+	- airline code
+	- limit
   
 ``` bash
  $curl = curl_init();
@@ -125,7 +142,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 }
 ```
 
-<h4>2. Popular Airline Routes</h4>
+<h4 id="v1/airline-directions">2. Popular Airline Routes</h4>
 
 ``` bash
 {
@@ -147,7 +164,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 }
 ```
 
-<h4>3. Popular City Directions</h4>
+<h4 id="popular-city-directions">3. Popular City Directions</h4>
 
 ``` bash
 {
@@ -170,7 +187,7 @@ GET https://api.travelpayouts.com/data/en/airlines.json
 }
 ```
 
-<h4>4. Prices for a Month</h4>
+<h4 id="prices-per-month">4. Prices for a Month</h4>
 
 ``` bash
 {
