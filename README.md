@@ -50,7 +50,7 @@ $ git clone https://github.com/alexandranazdravan/Traveler-Frontend.git
 ```
 Create a built-in web server: [https://www.jetbrains.com/help/phpstorm/php-built-in-web-server.html](https://www.jetbrains.com/help/phpstorm/php-built-in-web-server.html)
 <br>
-Make requests to localhost:*port/*uri
+Make requests to localhost:*port*/*uri*
 
 ## IATA Codes
 IATA codes are three-letter codes assigned by the International Air Transport Association (IATA) to identify airports, airlines, and aircrafts. <br>
