@@ -12,7 +12,8 @@
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#iata-codes">IATA Codes</a> •
-  <a href="#search-for-flights">Search for flights</a> •
+  <a href="#search-for-flights">TravelPayouts API</a> •
+  <a href="#search-for-flights">PHPMailer</a> •
   <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
@@ -74,81 +75,106 @@ GET https://api.travelpayouts.com/data/en/airports.json  <br>
 GET https://api.travelpayouts.com/data/en/airlines.json
 
 
-## Search for flights
-<h3 id="cheap-flights">Cheap Flights</h3>
+## TravelPayouts API
+``` bash
+ $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->request_url . $this->endpoint . $this->assemblyOptions($request_options),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => [
+                "X-Access-Token: 05f40c220e8193fc8297804b069de4d8",
+                "X-RapidAPI-Host: travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com",
+                "X-RapidAPI-Key: 54db60a185mshe7972e9ad846b31p1ee7b6jsnc676d9a1406e"
+            ],
+        ]);
 
-* Options:
-  - departure city
-  - destination city
-  - departure time
-  - return time
-  - currency
-* Response:
-  - airline
-  - is it lowcost?
-  - flight number
-  - price
-  - departure day + departure time
-  - return day + return time
-  
-<h3 id="direct-flights">Direct Flights</h3>
-
-* Options:
-  - departure city
-  - destination city
-  - departure time
-  - return time
-  - currency
-  
-* Response:
-  - airline
-  - is it lowcost?
-  - flight number
-  - price
-  - departure day + departure time
-  - return day + return time
-  
-<h3 id="popular-city-directions">Popular City Directions</h3>
-
-* Options:
-  - departure city
-  - currency
-  
-* Response:
-  - airline
-  - is it lowcost?
-  - flight number
-  - price
-  - departure day + departure time
-  - return day + return time
-  
-<h3 id="prices-per-month">Prices per Month</h3>
-
-* Options:
-  - departure city
-  - destination city
-  - currency
-  
-* Response:
-  - class
-  - price
-  - duration (minutes)
-  - distance (km)
-  - number of changes
-  - departure day
-  - return day
-  
-<h3 id="popular-airlines">Popular Airlines</h3>
-
-* Options:
-  - airline
-  - limit
-  
-* Response:
-  - departure city
-  - destination city
-  - popularity score
-
+        $response = curl_exec($curl);
+        curl_close($curl);
+```
+Example of responses:
+<h4>1. Cheap and Direct Flights</h4>
+``` bash
+{
+"success": true,
+"data": {
+    "HKT": {
+        "0": {
+            "price": 35443,
+            "airline": "UN",
+            "flight_number": 571,
+            "departure_at": "2015-06-09T21:20:00Z",
+            "return_at": "2015-07-15T12:40:00Z",
+            "expires_at": "2015-01-08T18:30:40Z"
+        }}
+    }
+}
+```
+<h4>2. Popular Airline Routes</h4>
+``` bash
+{
+    "success": true,
+    "data": {
+        "MOW-BKK": 187491,
+        "MOW-BCN": 113764,
+        "MOW-PAR": 91889,
+        "MOW-NYC": 77417,
+        "MOW-PRG": 71449,
+        "MOW-ROM": 67190,
+        "MOW-TLV": 62132,
+        "MOW-HKT": 58549,
+        "MOW-GOI": 47341,
+        "MOW-IST": 45553
+    },
+    "error": null,
+    "currency":"rub"
+}
+```
+<h4>3. Popular City Directions</h4>
+``` bash
+{
+    "success":true,
+    "data":{
+        "AER":{
+            "origin":"MOW",
+            "destination":"AER",
+            "price":3673,
+            "transfers":0,
+            "airline":"WZ",
+            "flight_number":125,
+            "departure_at":"2016-03-08T16:35:00Z",
+            "return_at":"2016-03-17T16:05:00Z",
+            "expires_at":"2016-02-22T09:32:44Z"
+        }
+    },
+    "error":null,
+    "currency":"rub"
+}
+```
+<h4>4. Prices for a Month</h4>
+``` bash
+{
+    "success":true,
+    "data":[{
+        "show_to_affiliates":true,
+        "trip_class":0,
+        "origin":"LED",
+        "destination":"HKT",
+        "depart_date":"2015-10-01",
+        "return_date":"",
+        "number_of_changes":1,
+        "value":29127,
+        "found_at":"2015-09-24T00:06:12+04:00",
+        "distance":8015,
+        "actual":true
+    }]
+}
+```
 
 ## Related
   - [Traveler -> Frontend](https://github.com/alexandranazdravan/Traveler-Frontend.git) - The frontend of the app
