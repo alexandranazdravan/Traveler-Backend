@@ -54,6 +54,7 @@ Make requests to localhost:*port*/*uri*
 
 **Note:**
 <blockquote>
+Available Endpoints:
     <ul>
         <li>/admin (only for admins)</li>
         <li>/login</li>
