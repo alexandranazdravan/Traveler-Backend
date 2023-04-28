@@ -49,6 +49,8 @@ To clone and run this application, you'll need [Vuetify 3](https://vuetifyjs.com
 # Clone this repository
 $ git clone https://github.com/alexandranazdravan/Traveler-Frontend.git
 ```
+
+I recommend using [PHPStorm IDE](https://www.jetbrains.com/phpstorm/) from JetBrains.
 Create a built-in web server: [https://www.jetbrains.com/help/phpstorm/php-built-in-web-server.html](https://www.jetbrains.com/help/phpstorm/php-built-in-web-server.html)
 <br>
 Make requests to localhost:*port*/*uri*
