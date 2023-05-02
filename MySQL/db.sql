@@ -74,4 +74,7 @@ ALTER TABLE wishlist ADD duration varchar(15) DEFAULT NULL;
 ALTER TABLE wishlist ADD distance varchar(15) DEFAULT NULL;
 ALTER TABLE wishlist ADD no_of_changes int(2) DEFAULT NULL;
 
+ALTER TABLE `users` MODIFY COLUMN `user_pass` varchar(255) NOT NULL;
+ALTER TABLE `users` MODIFY COLUMN `user_fullname` varchar(255) DEFAULT NULL;
+
 
