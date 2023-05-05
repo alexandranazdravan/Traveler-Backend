@@ -258,8 +258,7 @@ class GoogleFlights
                 $cookie = $_COOKIE['loggedin'];
             }
         }
-        $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name
-                        WHERE a.cookie = '$cookie';");
+        $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name;");
         if (mysqli_num_rows($query) == 0) {
             $error_message = array('error' => 'User not logged in!');
             http_response_code(400);
@@ -296,8 +295,7 @@ class GoogleFlights
             }
         } else if(isset($_GET['role'])){
             $cookie = $_COOKIE['loggedin'];
-            $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name
-                        WHERE a.cookie = '$cookie';");
+            $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name;");
             $rows = mysqli_fetch_array($query);
             echo json_encode(array("user_role" => $rows[0]));
         } else {

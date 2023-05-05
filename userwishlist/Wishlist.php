@@ -143,8 +143,7 @@ class Wishlist {
             }
         }
 
-        $query = mysqli_query($conn, "select u.user_id from `users` u join auth_details a on u.user_name = a.user_name
-WHERE a.cookie = '$cookie';");
+        $query = mysqli_query($conn, "select u.user_id from `users` u join auth_details a on u.user_name = a.user_name;");
         $rows = mysqli_fetch_array($query);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
