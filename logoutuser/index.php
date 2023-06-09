@@ -14,9 +14,9 @@ $conn = $database->getConn();
 $query = mysqli_query($conn, "select * from `auth_details`");
 $rows = [];
 while($row = mysqli_fetch_array($query)){
-    if($row['user_name'] !== 'admin') {
+    //if($row['user_name'] !== 'admin') {
         $rows[] = $row;
-    }
+    //}
 }
 $all_cookies = [];
 foreach ($rows as $row) {
@@ -26,8 +26,6 @@ foreach ($all_cookies as $username => $cookies) {
     if(in_array($cookie, $cookies)) {
         $all_cookies[$username] = array_diff($cookies, [$cookie]);
         break;
-    } else {
-        return;
     }
 }
 if(count($all_cookies[$username]) == 0) {
