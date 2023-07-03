@@ -1,6 +1,6 @@
 <?php
 
-namespace Traveler\MySQL;
+namespace Traveler\MariaDB;
 class Database {
     private $user = 'root';
     private $pass = 'pass';

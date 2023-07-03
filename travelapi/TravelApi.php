@@ -1,6 +1,6 @@
 <?php
 
-namespace Traveler\GoogleFlights;
+namespace Traveler\TravelApi;
 
 use DateTime;
 
@@ -38,7 +38,7 @@ use DateTime;
  *      "currency":"EUR"
  * }
  */
-class GoogleFlights
+class TravelApi
 {
     private string $request_url = "https://travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com/";
     private string $endpoint = 'v1/prices/direct';
@@ -77,7 +77,7 @@ class GoogleFlights
 
     public function analyzeResponse(array $response, string $currency = '', string $destination = '', $origin = ''): array
     {
-        $iata = new IATA();
+        $iata = new IATACitiesAirports();
         if (in_array($this->endpoint, $this->with_iata_endpoints)) {
             return $this->processIATAEndpoint($response, $iata, $destination, $origin, $currency);
         } else if (in_array($this->endpoint, $this->with_date_endpoints)) {
@@ -89,7 +89,7 @@ class GoogleFlights
 
     private function assemblyOptions(array $request_options): string
     {
-        $iata = new IATA();
+        $iata = new IATACitiesAirports();
         $options = "?";
 
         foreach ($request_options as $key => $value) {
@@ -115,7 +115,7 @@ class GoogleFlights
         return substr($options, 0, -1);
     }
 
-    private function processIATAEndpoint(array $response, IATA $iata, string $destination, string $origin, string $currency): array
+    private function processIATAEndpoint(array $response, IATACitiesAirports $iata, string $destination, string $origin, string $currency): array
     {
         $returned_details = array();
         $index = 0;
@@ -133,7 +133,7 @@ class GoogleFlights
                 $date = new DateTime($return[0]);
                 $return_day = $date->format('d-m-Y');
 
-                $airline = new Airline();
+                $airline = new IATAAirlines();
                 $airline_details = $airline->searchByCode($flight['airline']);
 
                 $returned_details[$index] = array(
@@ -163,7 +163,7 @@ class GoogleFlights
                 $date = new DateTime($return[0]);
                 $return_day = $date->format('d-m-Y');
 
-                $airline = new Airline();
+                $airline = new IATAAirlines();
                 $airline_details = $airline->searchByCode($flight['airline']);
 
                 $returned_details[$index] = array(
@@ -207,7 +207,7 @@ class GoogleFlights
         return $returned_details;
     }
 
-    private function processNoneEndpoint(array $response, IATA $iata): array
+    private function processNoneEndpoint(array $response, IATACitiesAirports $iata): array
     {
         $returned_details = array();
         $index = 0;
@@ -243,21 +243,13 @@ class GoogleFlights
 
 
     public function checkLoggedIn($conn, $data) {
-        if (!isset($_COOKIE['loggedin']) and !isset($data['cookie'])) {
+        if (!isset($_COOKIE['loggedin']) and !isset($data['cookie']) and !isset($_GET['cookie'])) {
             $error_message = array('error' => 'User not logged in!');
             http_response_code(400);
             echo json_encode($error_message);
             exit();
         }
 
-        if(!isset($_COOKIE['loggedin'])) {
-            $cookie = $data['cookie'];
-        }
-        else {
-            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                $cookie = $_COOKIE['loggedin'];
-            }
-        }
         $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name;");
         if (mysqli_num_rows($query) == 0) {
             $error_message = array('error' => 'User not logged in!');
@@ -270,7 +262,7 @@ class GoogleFlights
     public function checkRequest($conn, $data) {
         if (isset($_GET['item'])) {
             if ($_GET['item'] == 'airline') {
-                $airline = new Airline();
+                $airline = new IATAAirlines();
                 $page = isset($_GET['page']) ? $_GET['page'] : 1;
                 $pageSize = isset($_GET['pageSize']) ? $_GET['pageSize'] : 10;
                 $startIndex = ($page - 1) * $pageSize;
@@ -294,7 +286,6 @@ class GoogleFlights
 
             }
         } else if(isset($_GET['role'])){
-            $cookie = $_COOKIE['loggedin'];
             $query = mysqli_query($conn, "select u.user_role from `users` u join auth_details a on u.user_name = a.user_name;");
             $rows = mysqli_fetch_array($query);
             echo json_encode(array("user_role" => $rows[0]));

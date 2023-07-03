@@ -3,7 +3,7 @@ namespace Traveler\Register;
 
 use Exception;
 use PHPMailer\PHPMailer\OAuth;
-use Traveler\MySQL\Database;
+use Traveler\MariaDB\Database;
 use function Traveler\Security\_cleaninjections;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as MailerExcp;
@@ -13,7 +13,7 @@ date_default_timezone_set('Etc/UTC');
 
 require 'vendor/autoload.php';
 require_once dirname(__DIR__) . '/security.php';
-require_once dirname(__DIR__) . '/MySQL/Database.php';
+require_once dirname(__DIR__) . '/MariaDB/Database.php';
 
 class RegisterUser {
 

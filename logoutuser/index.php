@@ -1,8 +1,8 @@
 <?php
 
-use Traveler\MySQL\Database;
+use Traveler\MariaDB\Database;
 
-require_once dirname(__DIR__) . '/MySQL/Database.php';
+require_once dirname(__DIR__) . '/MariaDB/Database.php';
 
 if(isset($_COOKIE['loggedin'])) {
     $cookie = $_COOKIE['loggedin'];

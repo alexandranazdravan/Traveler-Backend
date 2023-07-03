@@ -1,6 +1,6 @@
 <?php
-namespace Traveler\GoogleFlights;
-class IATA {
+namespace Traveler\TravelApi;
+class IATACitiesAirports {
 
     private $city_codes_iata = array();
     private $airport_city_code = array();

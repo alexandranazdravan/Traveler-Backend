@@ -24,7 +24,7 @@ class RequestController {
                 require_once "../Traveler/profile/index.php";
             }
             if($uri == 'dashboard') {
-                require_once "../Traveler/google_flights/index.php";
+                require_once "../Traveler/travelapi/index.php";
             }
             if($uri == 'wishlist') {
                 require_once "../Traveler/userwishlist/index.php";
@@ -41,7 +41,7 @@ class RequestController {
                 require_once "../Traveler/profile/index.php";
             }
             if($uri == 'dashboard') {
-                require_once "../Traveler/google_flights/index.php";
+                require_once "../Traveler/travelapi/index.php";
             }
             if($uri == 'wishlist') {
                 require_once "../Traveler/userwishlist/index.php";

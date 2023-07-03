@@ -1,7 +1,7 @@
 <?php
 
-namespace Traveler\GoogleFlights;
-class Airline {
+namespace Traveler\TravelApi;
+class IATAAirlines {
     private array $airline_codes;
 
     public function __construct() {

@@ -5,12 +5,12 @@ use League\OAuth2\Client\Provider\Google;
 use PHPMailer\PHPMailer\Exception as MailerExcp;
 use PHPMailer\PHPMailer\OAuth;
 use PHPMailer\PHPMailer\PHPMailer;
-use Traveler\MySQL\Database;
+use Traveler\MariaDB\Database;
 use function Traveler\Security\_cleaninjections;
 
 require 'vendor/autoload.php';
 require_once dirname(__DIR__) . '/security.php';
-require_once dirname(__DIR__) . '/MySQL/Database.php';
+require_once dirname(__DIR__) . '/MariaDB/Database.php';
 
 class ResetPass {
     public function  __construct() {

@@ -3,12 +3,12 @@
 namespace Traveler\Login;
 
 use Exception;
-use Traveler\MySQL\Database;
+use Traveler\MariaDB\Database;
 use function Traveler\Security\_cleaninjections;
 require_once dirname(__DIR__) . '/security.php';
-require_once dirname(__DIR__) . '/MySQL/Database.php';
+require_once dirname(__DIR__) . '/MariaDB/Database.php';
 
-class LoginUser
+class Login
 {
     public function __construct()
     {
@@ -55,15 +55,14 @@ class LoginUser
                 $_COOKIE['loggedin'] = $value;
 
                 $query =  mysqli_query($conn, "select * from `auth_details` where user_name='$username'");
-                $no_of_logins = mysqli_num_rows($query);
+
                 if (mysqli_num_rows($query) == 0) {
                     $query = "INSERT INTO auth_details (user_name, cookie, expires_at) 
                             VALUES ('$username',  '$value', '" . date('Y-m-d\TH:i:s', time() + 864000) . "');";
                 } else {
                     $comma_value = ',' . $value;
                     $row = mysqli_fetch_array($query);
-                    $gfdgdf = (explode(",",$row['cookie']));
-                    $gdfgdf = count($gfdgdf);
+
                     if(count(explode(",",$row['cookie'])) < 3) {
                         $old_cookies = $row['cookie'];
                         $query = "UPDATE auth_details SET cookie=concat('$old_cookies','$comma_value'),

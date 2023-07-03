@@ -1,7 +1,7 @@
 <?php
 namespace Traveler\Admin;
 
-class AdminGetUsers {
+class AdminPage {
 
     private array $uri;
     private array $data;
